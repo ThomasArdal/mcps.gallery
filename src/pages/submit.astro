@@ -17,7 +17,9 @@ import TermWindow from '../components/TermWindow.astro';
             <h1 class="glow">submit a server</h1>
             <p class="lede">
               There's no submission form. This whole site is one file per server, and adding
-              a listing means opening a pull request against the repository behind it.
+              a listing means opening a pull request against the
+              <a href="https://github.com/ThomasArdal/mcps.gallery" target="_blank" rel="noreferrer">ThomasArdal/mcps.gallery</a>
+              repository on GitHub.
             </p>
 
             <h2 id="add-yaml-file">1. add a yaml file</h2>
@@ -64,6 +66,8 @@ installConfig: |                           # optional
 
             <h2 id="open-pr">3. open a pull request</h2>
             <p>
+              Fork <a href="https://github.com/ThomasArdal/mcps.gallery" target="_blank" rel="noreferrer">the repository</a>,
+              push your change, and open a pull request against <code>main</code>.
               One server per pull request keeps review fast. The PR template asks two
               things: that the server is real and that you're not the sole judge of your
               own "official" claim. Mark <code>official: true</code> only if you maintain
