@@ -44,19 +44,34 @@ export async function getAllServers() {
 
 export type ServerEntry = Awaited<ReturnType<typeof getAllServers>>[number];
 
+function byCountDesc(counts: Map<string, number>) {
+  return (a: string, b: string) => counts.get(b)! - counts.get(a)! || a.localeCompare(b);
+}
+
+// Tags are free-form and contributor-supplied, so the set only grows as more
+// servers get added. Showing every tag that's ever been used would turn this
+// into an unreadable wall of one-off chips, so we only surface tags shared by
+// more than one server, most-used first, capped as a hard backstop.
+const MIN_TAG_SERVERS = 2;
+const MAX_TAG_CHIPS = 12;
+
 export function collectFacets(servers: ServerEntry[]) {
-  const languages = new Set<string>();
-  const transports = new Set<string>();
-  const tags = new Set<string>();
+  const languageCounts = new Map<string, number>();
+  const transportCounts = new Map<string, number>();
+  const tagCounts = new Map<string, number>();
   for (const s of servers) {
-    languages.add(s.language);
-    for (const t of s.transports) transports.add(t);
-    for (const tag of s.tags) tags.add(tag);
+    languageCounts.set(s.language, (languageCounts.get(s.language) ?? 0) + 1);
+    for (const t of s.transports) transportCounts.set(t, (transportCounts.get(t) ?? 0) + 1);
+    for (const tag of s.tags) tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
   }
+
   return {
-    languages: [...languages].sort(),
-    transports: [...transports].sort(),
-    tags: [...tags].sort(),
+    languages: [...languageCounts.keys()].sort(byCountDesc(languageCounts)),
+    transports: [...transportCounts.keys()].sort(byCountDesc(transportCounts)),
+    tags: [...tagCounts.keys()]
+      .filter((tag) => tagCounts.get(tag)! >= MIN_TAG_SERVERS)
+      .sort(byCountDesc(tagCounts))
+      .slice(0, MAX_TAG_CHIPS),
   };
 }
 

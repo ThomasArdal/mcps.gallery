@@ -35,20 +35,18 @@ const facets = collectFacets(servers);
           </div>
 
           <div class="filters" id="filters">
-            <div class="filter-group" data-group="transports">
-              {facets.transports.map((t) => (
-                <button type="button" class="chip" data-group="transports" data-value={t}>{t}</button>
-              ))}
-            </div>
-            <div class="filter-group" data-group="official">
-              <button type="button" class="chip" data-group="official" data-value="true">official</button>
-              <button type="button" class="chip" data-group="official" data-value="false">community</button>
-            </div>
-            <div class="filter-group" data-group="language">
-              {facets.languages.map((l) => (
-                <button type="button" class="chip" data-group="language" data-value={l}>{l}</button>
-              ))}
-            </div>
+            {facets.transports.map((t) => (
+              <button type="button" class="chip" data-group="transports" data-value={t}>{t}</button>
+            ))}
+            <button type="button" class="chip" data-group="official" data-value="true">official</button>
+            <button type="button" class="chip" data-group="official" data-value="false">community</button>
+            {facets.languages.map((l) => (
+              <button type="button" class="chip" data-group="language" data-value={l}>{l}</button>
+            ))}
+            {facets.tags.length > 0 && <span class="divider" aria-hidden="true">|</span>}
+            {facets.tags.map((tag) => (
+              <button type="button" class="chip" data-group="tags" data-value={tag}>{tag}</button>
+            ))}
           </div>
         </div>
       </TermWindow>
@@ -163,14 +161,15 @@ const facets = collectFacets(servers);
   .filters {
     margin-top: 22px;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 10px;
+    column-gap: 8px;
   }
 
-  .filter-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  .divider {
+    color: var(--line-bright);
+    margin-inline: 4px;
   }
 
   .chip {
