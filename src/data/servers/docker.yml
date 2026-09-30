@@ -1,0 +1,27 @@
+name: Docker
+summary: List, run, and inspect Docker containers, images, volumes, and networks.
+description: |
+  A community-built MCP server that wraps the Docker CLI, letting a model
+  list running containers, start and stop them, read logs, inspect images,
+  and manage volumes and networks on the local Docker daemon.
+
+  Handy for an agent that needs to spin up a database or service on the fly
+  while working through a task.
+repoUrl: https://github.com/QuantGeekDev/docker-mcp
+author: QuantGeekDev
+license: MIT
+language: Python
+transports: [stdio]
+tags: [cloud-infra, developer-tools, containers]
+official: false
+featured: false
+installCommand: uvx docker-mcp
+installConfig: |
+  {
+    "mcpServers": {
+      "docker": {
+        "command": "uvx",
+        "args": ["docker-mcp"]
+      }
+    }
+  }

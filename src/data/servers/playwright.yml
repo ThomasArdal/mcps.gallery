@@ -1,0 +1,29 @@
+name: Playwright
+summary: Drive a real browser to navigate pages, fill forms, and read the accessibility tree.
+description: |
+  Microsoft's MCP server for browser automation, built on Playwright. Instead
+  of working from screenshots, it uses the page's accessibility tree, so the
+  model gets a fast, structured view of what's on screen and can click,
+  type, and navigate without a vision model in the loop.
+
+  Useful for end-to-end testing, scraping content behind JavaScript, and
+  letting an agent operate a web app the way a person would.
+repoUrl: https://github.com/microsoft/playwright-mcp
+homepageUrl: https://www.npmjs.com/package/@playwright/mcp
+author: Microsoft
+license: Apache-2.0
+language: TypeScript
+transports: [stdio]
+tags: [browser, testing, automation]
+official: true
+featured: true
+installCommand: npx @playwright/mcp@latest
+installConfig: |
+  {
+    "mcpServers": {
+      "playwright": {
+        "command": "npx",
+        "args": ["@playwright/mcp@latest"]
+      }
+    }
+  }

@@ -1,0 +1,30 @@
+name: Notion
+summary: Read and edit Notion pages, databases, and comments through the official API.
+description: |
+  Notion's own MCP server, giving a model access to your workspace: searching
+  pages, reading and updating page content, querying and filtering
+  databases, and reading or adding comments.
+
+  Authenticates through a Notion internal integration token, and respects
+  whatever pages and databases you've shared with that integration.
+repoUrl: https://github.com/makenotion/notion-mcp-server
+author: Notion
+license: MIT
+language: TypeScript
+transports: [stdio]
+tags: [productivity, docs, databases]
+official: true
+featured: true
+installCommand: npx -y @notionhq/notion-mcp-server
+installConfig: |
+  {
+    "mcpServers": {
+      "notion": {
+        "command": "npx",
+        "args": ["-y", "@notionhq/notion-mcp-server"],
+        "env": {
+          "NOTION_TOKEN": "<your-integration-token>"
+        }
+      }
+    }
+  }

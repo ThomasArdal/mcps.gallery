@@ -1,0 +1,30 @@
+name: Context7
+summary: Pull current, version-accurate library documentation straight into the model's context.
+description: |
+  Context7 solves a narrow but common problem: a model's training data goes
+  stale, so it suggests deprecated APIs or hallucinates methods that never
+  existed. This server fetches up-to-date documentation and code examples
+  for the library and version you're actually using, and drops them directly
+  into the conversation.
+
+  Works with a large and growing index of popular open-source libraries
+  across languages.
+repoUrl: https://github.com/upstash/context7
+homepageUrl: https://context7.com
+author: Upstash
+license: MIT
+language: TypeScript
+transports: [stdio, http]
+tags: [documentation, developer-tools]
+official: true
+featured: true
+installCommand: npx -y @upstash/context7-mcp
+installConfig: |
+  {
+    "mcpServers": {
+      "context7": {
+        "command": "npx",
+        "args": ["-y", "@upstash/context7-mcp"]
+      }
+    }
+  }

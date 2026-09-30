@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import TermWindow from '../components/TermWindow.astro';
+---
+
+<Base title="Not found" description="This page doesn't exist.">
+  <section class="page">
+    <div class="wrap narrow">
+      <TermWindow path="~/mcps.gallery" pathId="term-path">
+        <div class="body">
+          <p class="line"><span class="prompt">$</span> cd <span id="path">this-page</span></p>
+          <p class="error">bash: no such server</p>
+          <p class="line"><span class="prompt">$</span> <a href="/" class="link">cd / (back to the directory)</a></p>
+        </div>
+      </TermWindow>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page {
+    padding-block: 80px;
+  }
+
+  .narrow {
+    max-width: 560px;
+  }
+
+  .body {
+    padding: 28px 32px;
+    font-size: 0.95rem;
+  }
+
+  .line {
+    margin-top: 10px;
+  }
+
+  .prompt {
+    color: var(--phosphor);
+    margin-right: 8px;
+  }
+
+  .error {
+    margin-top: 10px;
+    color: var(--signal);
+  }
+
+  .link {
+    color: var(--text);
+    border-bottom: 1px solid var(--line-bright);
+  }
+
+  .link:hover {
+    color: var(--phosphor);
+    border-color: var(--phosphor);
+  }
+</style>
+
+<script>
+  const path = document.getElementById('path');
+  const termPath = document.getElementById('term-path');
+  if (path) path.textContent = window.location.pathname;
+  if (termPath) termPath.textContent = `~/mcps.gallery${window.location.pathname}`;
+</script>

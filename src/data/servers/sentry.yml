@@ -1,0 +1,26 @@
+name: Sentry
+summary: Look up issues, stack traces, and root-cause analysis from a Sentry project.
+description: |
+  Sentry's own MCP server, letting a model search and triage errors and
+  performance issues in your Sentry projects, pull a stack trace for a
+  specific event, and use Seer, Sentry's AI root-cause analysis, from inside
+  a chat.
+
+  Runs as a hosted remote server reachable over HTTP, so there's nothing to
+  install locally beyond your MCP client's configuration.
+repoUrl: https://github.com/getsentry/sentry-mcp
+homepageUrl: https://mcp.sentry.dev
+author: Sentry
+language: TypeScript
+transports: [http]
+tags: [error-monitoring, observability, debugging]
+official: true
+featured: false
+installConfig: |
+  {
+    "mcpServers": {
+      "sentry": {
+        "url": "https://mcp.sentry.dev/mcp"
+      }
+    }
+  }

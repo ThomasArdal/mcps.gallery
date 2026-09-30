@@ -1,0 +1,27 @@
+name: Fetch
+summary: Fetch a URL and convert its content to clean, model-friendly markdown.
+description: |
+  A reference MCP server that retrieves a web page and converts its HTML into
+  markdown before handing it to the model, so the model can read articles,
+  docs, and other pages without wrestling with raw markup.
+
+  Supports pagination for long pages and respects robots.txt by default.
+repoUrl: https://github.com/modelcontextprotocol/servers/tree/main/src/fetch
+homepageUrl: https://modelcontextprotocol.io
+author: Anthropic
+license: MIT
+language: Python
+transports: [stdio]
+tags: [web, http, reference-server]
+official: true
+featured: false
+installCommand: uvx mcp-server-fetch
+installConfig: |
+  {
+    "mcpServers": {
+      "fetch": {
+        "command": "uvx",
+        "args": ["mcp-server-fetch"]
+      }
+    }
+  }

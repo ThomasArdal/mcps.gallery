@@ -1,0 +1,70 @@
+---
+---
+
+<footer class="site-footer">
+  <div class="wrap bar">
+    <p class="msg">
+      An index of <a href="https://modelcontextprotocol.io" target="_blank" rel="noreferrer">Model Context Protocol</a> servers, kept up by whoever sends the next pull request.
+    </p>
+    <div class="status">
+      <a href="/submit">&gt; submit-a-server</a>
+      <span class="sep" aria-hidden="true">|</span>
+      <span id="clock" class="clock"></span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    margin-top: 96px;
+  }
+
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 20px;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  .bar a {
+    color: var(--text);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bar a:hover {
+    color: var(--phosphor);
+    border-color: var(--phosphor);
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+  }
+
+  .sep {
+    color: var(--line-bright);
+  }
+
+  .clock {
+    font-variant-numeric: tabular-nums;
+    color: var(--text-dim);
+  }
+</style>
+
+<script>
+  const clock = document.getElementById('clock');
+  function tick() {
+    if (!clock) return;
+    const now = new Date();
+    clock.textContent = now.toLocaleTimeString('en-GB', { hour12: false });
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>

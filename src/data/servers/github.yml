@@ -1,0 +1,30 @@
+name: GitHub
+summary: Manage repositories, issues, pull requests, and workflows from a GitHub account.
+description: |
+  GitHub's own MCP server, giving a model direct access to GitHub: reading
+  and searching code, opening and commenting on issues and pull requests,
+  managing branches, and inspecting Actions workflow runs.
+
+  Ships as a single Go binary and a Docker image, and is also available as a
+  hosted remote server so you don't have to run anything locally.
+repoUrl: https://github.com/github/github-mcp-server
+author: GitHub
+license: MIT
+language: Go
+transports: [stdio, http]
+tags: [git, issues, pull-requests, ci-cd]
+official: true
+featured: true
+installCommand: docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server
+installConfig: |
+  {
+    "mcpServers": {
+      "github": {
+        "command": "docker",
+        "args": ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"],
+        "env": {
+          "GITHUB_PERSONAL_ACCESS_TOKEN": "<your-token>"
+        }
+      }
+    }
+  }

@@ -1,0 +1,31 @@
+name: Redis
+summary: Manage keys, run queries, and search vectors in a Redis instance in natural language.
+description: |
+  The official Redis MCP server, built for agentic applications that need to
+  read and write Redis directly: string, hash, list, set, and JSON keys,
+  vector search over Redis's vector index, and general key/query management.
+
+  Connects to any Redis-compatible instance, self-hosted or Redis Cloud, over
+  a standard connection string.
+repoUrl: https://github.com/redis/mcp-redis
+homepageUrl: https://redis.io/docs/latest/integrate/redis-mcp/
+author: Redis
+license: MIT
+language: Python
+transports: [stdio]
+tags: [databases, caching, vector-search]
+official: true
+featured: false
+installCommand: uvx --from redis-mcp-server redis-mcp-server
+installConfig: |
+  {
+    "mcpServers": {
+      "redis": {
+        "command": "uvx",
+        "args": ["--from", "redis-mcp-server", "redis-mcp-server"],
+        "env": {
+          "REDIS_URL": "redis://localhost:6379"
+        }
+      }
+    }
+  }

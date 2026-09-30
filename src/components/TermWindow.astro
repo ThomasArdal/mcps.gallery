@@ -1,0 +1,56 @@
+---
+interface Props {
+  path: string;
+  pathId?: string;
+}
+
+const { path, pathId } = Astro.props;
+---
+
+<div class="term-window">
+  <div class="term-titlebar">
+    <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="path" id={pathId}>{path}</span>
+  </div>
+  <div class="term-body">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .term-window {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-panel);
+  }
+
+  .term-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .dots {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .dots i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--line-bright);
+    display: block;
+  }
+
+  .path {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>

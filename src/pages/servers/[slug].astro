@@ -1,0 +1,333 @@
+---
+import Base from '../../layouts/Base.astro';
+import TermWindow from '../../components/TermWindow.astro';
+import { getAllServers, relativeTime } from '../../lib/servers';
+
+export async function getStaticPaths() {
+  const servers = await getAllServers();
+  return servers.map((server) => ({
+    params: { slug: server.id },
+    props: { server },
+  }));
+}
+
+const { server } = Astro.props;
+const paragraphs = server.description.trim().split(/\n\s*\n/);
+const repoName = server.repoUrl.replace(/^https?:\/\/(www\.)?github\.com\//, '');
+---
+
+<Base title={server.name} description={server.summary}>
+  <section class="detail">
+    <div class="wrap">
+      <a href="/" class="back">&larr; all servers</a>
+
+      <TermWindow path={`~/mcps.gallery/servers/${server.id}`}>
+        <div class="layout">
+          <div class="main">
+            <div class="panel-top">
+              <span class="primary-tag">[{server.tags[0] ?? server.language}]</span>
+              {server.official && <span class="stamp">[OFFICIAL]</span>}
+            </div>
+
+            <h1 class="glow"><span class="prompt" aria-hidden="true">$ </span>{server.name}</h1>
+            <p class="summary">{server.summary}</p>
+
+            <div class="tags">
+              {server.tags.map((tag) => <span class="tag">[{tag}]</span>)}
+            </div>
+
+            <div class="actions">
+              <a class="btn primary" href={server.repoUrl} target="_blank" rel="noreferrer">view repository</a>
+              {server.homepageUrl && (
+                <a class="btn" href={server.homepageUrl} target="_blank" rel="noreferrer">visit homepage</a>
+              )}
+            </div>
+
+            <div class="body">
+              {paragraphs.map((p) => <p>{p}</p>)}
+            </div>
+
+            {(server.installCommand || server.installConfig) && (
+              <div class="install">
+                <h2>install</h2>
+                {server.installCommand && (
+                  <div class="code-block">
+                    <code><span class="prompt" aria-hidden="true">$ </span>{server.installCommand}</code>
+                    <button type="button" class="copy" data-copy={server.installCommand}>[copy]</button>
+                  </div>
+                )}
+                {server.installConfig && (
+                  <div class="code-block config">
+                    <pre><code>{server.installConfig.trim()}</code></pre>
+                    <button type="button" class="copy" data-copy={server.installConfig.trim()}>[copy]</button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <aside class="side">
+            <h2>details</h2>
+            <dl>
+              <div class="row">
+                <dt>repository</dt>
+                <dd><code>{repoName}</code></dd>
+              </div>
+              <div class="row">
+                <dt>author</dt>
+                <dd>{server.author}</dd>
+              </div>
+              {server.license && (
+                <div class="row">
+                  <dt>license</dt>
+                  <dd>{server.license}</dd>
+                </div>
+              )}
+              <div class="row">
+                <dt>language</dt>
+                <dd>{server.language}</dd>
+              </div>
+              <div class="row">
+                <dt>transport</dt>
+                <dd>{server.transports.join(', ')}</dd>
+              </div>
+              <div class="row">
+                <dt>access</dt>
+                <dd>{server.official ? 'official' : 'community'}</dd>
+              </div>
+              {server.stars !== null && (
+                <div class="row">
+                  <dt>stars</dt>
+                  <dd>{server.stars.toLocaleString('en-US')}</dd>
+                </div>
+              )}
+              <div class="row">
+                <dt>last commit</dt>
+                <dd>{relativeTime(server.lastCommit)}</dd>
+              </div>
+            </dl>
+          </aside>
+        </div>
+      </TermWindow>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .detail {
+    padding-block: 40px 72px;
+  }
+
+  .back {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+
+  .back:hover {
+    color: var(--phosphor);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+  }
+
+  .main {
+    padding: 36px 40px 44px;
+    min-width: 0;
+  }
+
+  .side {
+    padding: 36px 28px 44px;
+    border-left: 1px solid var(--line);
+  }
+
+  .panel-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .primary-tag {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+
+  .stamp {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--signal);
+  }
+
+  .prompt {
+    color: var(--phosphor);
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+    margin-top: 16px;
+    text-transform: uppercase;
+  }
+
+  .summary {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: var(--text-dim);
+    max-width: 60ch;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .tag {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .btn {
+    font-size: 0.88rem;
+    font-weight: 500;
+    border-radius: var(--radius);
+    padding: 9px 16px;
+    border: 1px solid var(--line-bright);
+  }
+
+  .btn.primary {
+    background: var(--phosphor);
+    color: var(--bg);
+    border-color: var(--phosphor);
+  }
+
+  .btn:not(.primary):hover {
+    border-color: var(--phosphor);
+    color: var(--phosphor);
+  }
+
+  .body {
+    margin-top: 28px;
+    max-width: 66ch;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .install {
+    margin-top: 36px;
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+  }
+
+  .install h2,
+  .side h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-dim);
+  }
+
+  .code-block {
+    margin-top: 14px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-size: 0.85rem;
+    overflow-x: auto;
+  }
+
+  .code-block.config pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .copy {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    background: transparent;
+    color: var(--text-dim);
+    border: none;
+    padding: 3px 4px;
+  }
+
+  .copy:hover {
+    color: var(--phosphor);
+  }
+
+  .copy.copied {
+    color: var(--signal);
+  }
+
+  dl {
+    margin: 14px 0 0;
+  }
+
+  .row {
+    padding-block: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 0.85rem;
+  }
+
+  .row:first-child {
+    border-top: none;
+  }
+
+  dt {
+    color: var(--text-dim);
+  }
+
+  dd {
+    margin: 2px 0 0;
+    font-size: 0.88rem;
+    word-break: break-word;
+  }
+
+  @media (max-width: 860px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+
+    .side {
+      border-left: none;
+      border-top: 1px solid var(--line);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.copy').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const text = btn.dataset.copy ?? '';
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.textContent = '[copied]';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = '[copy]';
+          btn.classList.remove('copied');
+        }, 1500);
+      } catch {
+        // clipboard API unavailable, nothing to fall back to silently
+      }
+    });
+  });
+</script>

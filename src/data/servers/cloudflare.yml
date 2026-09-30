@@ -1,0 +1,18 @@
+name: Cloudflare
+summary: Manage Workers, KV, R2, DNS, and other Cloudflare resources by talking to your account.
+description: |
+  Cloudflare's collection of remote MCP servers, one per product area
+  (Workers, DNS analytics, observability, browser rendering, and more), each
+  deployed on Cloudflare's own edge network.
+
+  Each server exposes a distinct URL and connects over `mcp-remote`; check
+  the repository for the specific endpoint and scopes for the product you
+  want to control.
+repoUrl: https://github.com/cloudflare/mcp-server-cloudflare
+author: Cloudflare
+license: Apache-2.0
+language: TypeScript
+transports: [http]
+tags: [cloud-infra, dns, edge, workers]
+official: true
+featured: false

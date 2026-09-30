@@ -1,0 +1,29 @@
+# Copy this file into src/data/servers/, rename it to your server's slug
+# (lowercase, hyphens, e.g. my-server.yml; the filename becomes the URL),
+# and fill in every field below. See CONTRIBUTING.md for the field reference.
+
+name: My Server
+summary: One sentence, under 160 characters, no trailing period.
+description: |
+  A longer explanation of what the server does and why someone would install
+  it. One or more paragraphs, separated by a blank line. Plain text only,
+  no markdown formatting.
+repoUrl: https://github.com/you/my-server
+# homepageUrl: https://example.com
+author: Your name or organization
+# license: MIT
+language: TypeScript
+transports: [stdio] # any of: stdio, sse, http
+tags: [tag-one, tag-two]
+official: false # true only if you maintain the underlying product, not just the MCP server
+featured: false
+# installCommand: npx -y my-server
+# installConfig: |
+#   {
+#     "mcpServers": {
+#       "my-server": {
+#         "command": "npx",
+#         "args": ["-y", "my-server"]
+#       }
+#     }
+#   }

@@ -1,0 +1,29 @@
+name: Grafana
+summary: Search dashboards, run queries, and pull alerts and incidents from a Grafana instance.
+description: |
+  Grafana Labs' own MCP server for talking to a Grafana instance: searching
+  and reading dashboards, running Prometheus, Loki, and Tempo queries,
+  listing datasources, and pulling firing alerts and incidents.
+
+  Authenticates with a Grafana service account token against your own
+  Grafana or Grafana Cloud instance.
+repoUrl: https://github.com/grafana/mcp-grafana
+author: Grafana Labs
+license: Apache-2.0
+language: Go
+transports: [stdio]
+tags: [monitoring, observability, dashboards]
+official: true
+featured: false
+installConfig: |
+  {
+    "mcpServers": {
+      "grafana": {
+        "command": "mcp-grafana",
+        "env": {
+          "GRAFANA_URL": "https://your-grafana-instance",
+          "GRAFANA_API_KEY": "<your-service-account-token>"
+        }
+      }
+    }
+  }

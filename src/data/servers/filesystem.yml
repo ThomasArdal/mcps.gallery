@@ -1,0 +1,28 @@
+name: Filesystem
+summary: Read, write, and search files on the local disk under a set of allowed directories.
+description: |
+  A reference MCP server from the Model Context Protocol project. Gives a model
+  read/write access to files and directories you explicitly allow, including
+  reading, editing, moving, and searching files, and listing directory trees.
+
+  Access is scoped to the directories you pass on startup, so the model can
+  never reach outside the paths you grant.
+repoUrl: https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem
+homepageUrl: https://modelcontextprotocol.io
+author: Anthropic
+license: MIT
+language: TypeScript
+transports: [stdio]
+tags: [files, local, reference-server]
+official: true
+featured: true
+installCommand: npx -y @modelcontextprotocol/server-filesystem /path/to/allowed/dir
+installConfig: |
+  {
+    "mcpServers": {
+      "filesystem": {
+        "command": "npx",
+        "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/allowed/dir"]
+      }
+    }
+  }

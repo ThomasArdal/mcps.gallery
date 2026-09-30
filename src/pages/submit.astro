@@ -1,0 +1,237 @@
+---
+import Base from '../layouts/Base.astro';
+import TermWindow from '../components/TermWindow.astro';
+---
+
+<Base
+  title="Submit a server"
+  description="How to add an MCP server to mcps.gallery: one YAML file, one pull request."
+>
+  <section class="page">
+    <div class="wrap">
+      <a href="/" class="back">&larr; all servers</a>
+
+      <TermWindow path="~/mcps.gallery/submit">
+        <div class="layout">
+          <div class="main">
+            <h1 class="glow">submit a server</h1>
+            <p class="lede">
+              There's no submission form. This whole site is one file per server, and adding
+              a listing means opening a pull request against the repository behind it.
+            </p>
+
+            <h2 id="add-yaml-file">1. add a yaml file</h2>
+            <p>
+              Copy <code>.github/server-listing-template.yml</code> into
+              <code>src/data/servers/</code>, name it after your server (for example
+              <code>my-server.yml</code>), and fill in the fields. That filename becomes the
+              server's URL, so keep it short and lowercase with hyphens.
+            </p>
+
+            <div class="code-block">
+              <pre><code>{`name: My Server
+summary: One sentence, under 160 characters, no trailing period.
+description: |
+  A longer explanation, one or more paragraphs separated by a blank line.
+  Plain text only, no markdown formatting.
+repoUrl: https://github.com/you/my-server
+homepageUrl: https://example.com          # optional
+author: Your name or org
+license: MIT                              # optional
+language: TypeScript
+transports: [stdio]                       # stdio, sse, and/or http
+tags: [databases, developer-tools]
+official: false
+featured: false
+installCommand: npx -y my-server           # optional
+installConfig: |                           # optional
+  {
+    "mcpServers": {
+      "my-server": {
+        "command": "npx",
+        "args": ["-y", "my-server"]
+      }
+    }
+  }`}</code></pre>
+            </div>
+
+            <h2 id="check-locally">2. check it locally</h2>
+            <p>
+              Run <code>npm install && npm run build</code>. The build validates every
+              listing against the schema in <code>src/content.config.ts</code> and fails
+              with a clear error if a field is missing or the wrong type.
+            </p>
+
+            <h2 id="open-pr">3. open a pull request</h2>
+            <p>
+              One server per pull request keeps review fast. The PR template asks two
+              things: that the server is real and that you're not the sole judge of your
+              own "official" claim. Mark <code>official: true</code> only if you maintain
+              the underlying product, not just the MCP server for it.
+            </p>
+
+            <h2 id="rejected">what gets rejected</h2>
+            <p>
+              Servers that don't implement the Model Context Protocol, listings for a
+              product rather than a server, and duplicates of an existing listing for the
+              same repository.
+            </p>
+          </div>
+
+          <aside class="side">
+            <h2>on this page</h2>
+            <nav class="toc">
+              <a href="#add-yaml-file">[1] add a yaml file</a>
+              <a href="#check-locally">[2] check it locally</a>
+              <a href="#open-pr">[3] open a pull request</a>
+              <a href="#rejected">[#] what gets rejected</a>
+            </nav>
+
+            <h2>files</h2>
+            <ul class="filelist">
+              <li>.github/server-listing-template.yml</li>
+              <li>src/data/servers/*.yml</li>
+              <li>CONTRIBUTING.md</li>
+            </ul>
+          </aside>
+        </div>
+      </TermWindow>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page {
+    padding-block: 40px 72px;
+  }
+
+  .back {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+
+  .back:hover {
+    color: var(--phosphor);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+  }
+
+  .main {
+    padding: 36px 40px 48px;
+    min-width: 0;
+  }
+
+  .side {
+    padding: 36px 28px 44px;
+    border-left: 1px solid var(--line);
+  }
+
+  .side h2 {
+    font-size: 0.85rem;
+  }
+
+  .side h2:not(:first-child) {
+    margin-top: 28px;
+  }
+
+  .toc {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+    font-size: 0.82rem;
+  }
+
+  .toc a {
+    color: var(--text-dim);
+  }
+
+  .toc a:hover {
+    color: var(--phosphor);
+  }
+
+  .filelist {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+
+  h1 {
+    font-size: clamp(1.7rem, 3vw, 2.1rem);
+    text-transform: uppercase;
+  }
+
+  .lede {
+    margin-top: 12px;
+    font-size: 1rem;
+    color: var(--text-dim);
+    max-width: 62ch;
+  }
+
+  h2 {
+    font-size: 0.95rem;
+    margin-top: 32px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--phosphor);
+  }
+
+  p {
+    margin-top: 10px;
+    max-width: 66ch;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  code {
+    font-size: 0.9em;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 1px 5px;
+    color: var(--text);
+  }
+
+  .code-block {
+    margin-top: 16px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    overflow-x: auto;
+  }
+
+  .code-block pre {
+    margin: 0;
+  }
+
+  .code-block code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 860px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+
+    .side {
+      border-left: none;
+      border-top: 1px solid var(--line);
+    }
+  }
+</style>

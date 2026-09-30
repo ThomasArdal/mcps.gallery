@@ -1,0 +1,29 @@
+name: Memory
+summary: A persistent knowledge graph the model can read from and write to across sessions.
+description: |
+  A reference MCP server that gives a model long-term memory in the form of a
+  local knowledge graph of entities, relationships, and observations. The
+  model can store facts during a conversation and recall them later, even in
+  a completely new session.
+
+  Useful for assistants that need to remember user preferences, ongoing
+  projects, or prior decisions without a full database behind them.
+repoUrl: https://github.com/modelcontextprotocol/servers/tree/main/src/memory
+homepageUrl: https://modelcontextprotocol.io
+author: Anthropic
+license: MIT
+language: TypeScript
+transports: [stdio]
+tags: [memory, knowledge-graph, reference-server]
+official: true
+featured: true
+installCommand: npx -y @modelcontextprotocol/server-memory
+installConfig: |
+  {
+    "mcpServers": {
+      "memory": {
+        "command": "npx",
+        "args": ["-y", "@modelcontextprotocol/server-memory"]
+      }
+    }
+  }

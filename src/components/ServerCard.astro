@@ -1,0 +1,116 @@
+---
+import type { ServerEntry } from '../lib/servers';
+import { relativeTime } from '../lib/servers';
+
+interface Props {
+  server: ServerEntry;
+}
+
+const { server } = Astro.props;
+---
+
+<a
+  href={`/servers/${server.id}/`}
+  class="card"
+  data-card
+  data-name={server.name.toLowerCase()}
+  data-language={server.language}
+  data-transports={server.transports.join(' ')}
+  data-tags={server.tags.join(' ')}
+  data-official={server.official ? 'true' : 'false'}
+  data-search={[server.name, server.summary, server.author, ...server.tags].join(' ').toLowerCase()}
+  data-stars={server.stars ?? 0}
+  data-updated-ts={server.lastCommit ? new Date(server.lastCommit).getTime() : 0}
+>
+  <div class="top">
+    <span class="bracket-tag">[{server.tags[0] ?? server.language}]</span>
+    {server.official && <span class="stamp">[OFFICIAL]</span>}
+  </div>
+  <h3 class="name"><span class="prompt" aria-hidden="true">$ </span>{server.name}</h3>
+  <p class="summary">{server.summary}</p>
+  <div class="meta">
+    <span class="bracket-tag">[{server.language}]</span>
+    {server.transports.map((t) => <span class="bracket-tag">[{t}]</span>)}
+    <span class="spacer" />
+    {server.stars !== null && (
+      <span class="stars" title={`${server.stars} stars on GitHub`}>
+        &#9733;{server.stars.toLocaleString('en-US')}
+      </span>
+    )}
+    <span class="updated">{relativeTime(server.lastCommit)}</span>
+  </div>
+</a>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--bg-panel);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px 20px 16px;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+  }
+
+  .card:hover,
+  .card:focus-visible {
+    border-color: var(--phosphor);
+    background: var(--bg-panel-hover);
+    transform: translateY(-2px);
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .bracket-tag {
+    font-size: 0.74rem;
+    color: var(--text-dim);
+  }
+
+  .stamp {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--signal);
+  }
+
+  .name {
+    font-size: 1.15rem;
+  }
+
+  .prompt {
+    color: var(--phosphor);
+  }
+
+  .summary {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    padding-top: 10px;
+    margin-top: 4px;
+    border-top: 1px solid var(--line);
+    font-size: 0.76rem;
+    color: var(--text-dim);
+  }
+
+  .spacer {
+    flex: 1;
+  }
+
+  .stars {
+    color: var(--phosphor);
+  }
+</style>

@@ -1,0 +1,28 @@
+name: Figma Context
+summary: Pull layout, styling, and component data from a Figma file into a coding agent.
+description: |
+  A community-built MCP server that reads a Figma file's layout, styles, and
+  component structure and hands it to a coding agent in a compact format, so
+  a design can be turned into working front-end code in a single pass instead
+  of round-tripping screenshots back and forth.
+
+  Works with any MCP client that can generate code, including Cursor, Claude
+  Code, and Windsurf.
+repoUrl: https://github.com/GLips/Figma-Context-MCP
+author: Graham Lipsman
+license: MIT
+language: TypeScript
+transports: [stdio]
+tags: [design, frontend, developer-tools]
+official: false
+featured: true
+installCommand: npx -y figma-developer-mcp --figma-api-key=<your-api-key>
+installConfig: |
+  {
+    "mcpServers": {
+      "figma": {
+        "command": "npx",
+        "args": ["-y", "figma-developer-mcp", "--figma-api-key=<your-api-key>"]
+      }
+    }
+  }

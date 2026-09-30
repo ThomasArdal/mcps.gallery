@@ -1,0 +1,30 @@
+name: Sequential Thinking
+summary: Structured, revisable step-by-step reasoning for working through complex problems.
+description: |
+  A reference MCP server that gives a model a tool for dynamic, reflective
+  problem-solving. Instead of committing to one chain of thought, the model
+  can break a problem into steps, revise earlier steps as understanding
+  improves, and branch into alternative approaches before settling on an
+  answer.
+
+  Well suited to planning, design, and debugging tasks where the right
+  approach isn't obvious up front.
+repoUrl: https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking
+homepageUrl: https://modelcontextprotocol.io
+author: Anthropic
+license: MIT
+language: TypeScript
+transports: [stdio]
+tags: [reasoning, planning, reference-server]
+official: true
+featured: false
+installCommand: npx -y @modelcontextprotocol/server-sequential-thinking
+installConfig: |
+  {
+    "mcpServers": {
+      "sequential-thinking": {
+        "command": "npx",
+        "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+      }
+    }
+  }

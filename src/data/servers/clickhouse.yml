@@ -1,0 +1,32 @@
+name: ClickHouse
+summary: Run read-only SQL queries against a ClickHouse database and inspect its schema.
+description: |
+  ClickHouse's own MCP server, giving a model a safe way to explore a
+  ClickHouse database: listing databases and tables, reading table schemas,
+  and running read-only SQL queries against your data.
+
+  Ships as a Python package and connects to any self-hosted ClickHouse
+  server or ClickHouse Cloud instance.
+repoUrl: https://github.com/ClickHouse/mcp-clickhouse
+author: ClickHouse
+license: Apache-2.0
+language: Python
+transports: [stdio]
+tags: [databases, analytics, sql]
+official: true
+featured: false
+installCommand: uvx mcp-clickhouse
+installConfig: |
+  {
+    "mcpServers": {
+      "clickhouse": {
+        "command": "uvx",
+        "args": ["mcp-clickhouse"],
+        "env": {
+          "CLICKHOUSE_HOST": "localhost",
+          "CLICKHOUSE_USER": "default",
+          "CLICKHOUSE_PASSWORD": ""
+        }
+      }
+    }
+  }

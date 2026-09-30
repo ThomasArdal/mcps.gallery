@@ -1,0 +1,55 @@
+---
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a href="/" class="wordmark">
+      <span class="dim">~/</span>mcps.gallery<span class="cursor" aria-hidden="true">_</span>
+    </a>
+    <nav class="nav">
+      <a href="/submit">&gt; submit-a-server</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .wordmark {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text);
+  }
+
+  .dim {
+    color: var(--text-dim);
+  }
+
+  .nav a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 7px 12px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav a:hover {
+    color: var(--phosphor);
+    border-color: var(--line-bright);
+  }
+</style>

@@ -1,0 +1,320 @@
+---
+import Base from '../layouts/Base.astro';
+import TermWindow from '../components/TermWindow.astro';
+import ServerCard from '../components/ServerCard.astro';
+import { getAllServers, collectFacets } from '../lib/servers';
+
+const servers = await getAllServers();
+const facets = collectFacets(servers);
+---
+
+<Base
+  title="mcps.gallery"
+  description="A directory of Model Context Protocol servers. Search by name, filter by transport, language, or tag, and find the install command."
+>
+  <section class="hero">
+    <div class="wrap">
+      <TermWindow path="~/mcps.gallery">
+        <div class="hero-body">
+          <div class="rule" aria-hidden="true"></div>
+          <h1 class="glow">FIND THE SERVER. <br />WIRE IT IN.</h1>
+          <div class="rule" aria-hidden="true"></div>
+
+          <p class="lede">{servers.length} servers indexed. search, filter, copy the config.<span class="cursor" aria-hidden="true">_</span></p>
+
+          <div class="search-row">
+            <label for="search" class="visually-hidden">Search servers</label>
+            <span class="prompt-symbol" aria-hidden="true">&gt;</span>
+            <input
+              id="search"
+              type="search"
+              placeholder={`search ${servers.length} servers, tags, or "postgres"...`}
+              autocomplete="off"
+            />
+            <span class="hint" aria-hidden="true" title="Press / to search">/</span>
+          </div>
+
+          <div class="filters" id="filters">
+            <div class="filter-group" data-group="transports">
+              {facets.transports.map((t) => (
+                <button type="button" class="chip" data-group="transports" data-value={t}>{t}</button>
+              ))}
+            </div>
+            <div class="filter-group" data-group="official">
+              <button type="button" class="chip" data-group="official" data-value="true">official</button>
+              <button type="button" class="chip" data-group="official" data-value="false">community</button>
+            </div>
+            <div class="filter-group" data-group="language">
+              {facets.languages.map((l) => (
+                <button type="button" class="chip" data-group="language" data-value={l}>{l}</button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </TermWindow>
+    </div>
+  </section>
+
+  <section class="results">
+    <div class="wrap">
+      <div class="results-bar">
+        <p id="result-count">{servers.length} servers</p>
+        <div class="sort">
+          <label for="sort" class="visually-hidden">Sort</label>
+          <select id="sort">
+            <option value="stars">most starred</option>
+            <option value="name">name a-z</option>
+            <option value="updated">recently updated</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid" id="grid">
+        {servers.map((server) => <ServerCard server={server} />)}
+      </div>
+
+      <p class="empty" id="empty" hidden>No servers match those filters yet. Maybe you should add one.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: 32px 40px;
+  }
+
+  .hero-body {
+    padding: 32px clamp(20px, 4vw, 40px) 36px;
+  }
+
+  .rule {
+    height: 10px;
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--phosphor) 0 8px,
+      transparent 8px 12px
+    );
+    opacity: 0.85;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 5.5vw, 3.6rem);
+    color: var(--text);
+    margin-block: 18px;
+    text-transform: uppercase;
+  }
+
+  .lede {
+    margin-top: 4px;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    max-width: 56ch;
+  }
+
+  .search-row {
+    margin-top: 28px;
+    max-width: 640px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid var(--line-bright);
+  }
+
+  .prompt-symbol {
+    color: var(--phosphor);
+    font-weight: 700;
+    padding-inline: 4px 10px;
+  }
+
+  #search {
+    flex: 1;
+    width: 100%;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    background: transparent;
+    color: var(--text);
+    border: none;
+    padding: 12px 4px;
+    caret-color: var(--phosphor);
+  }
+
+  #search:focus-visible {
+    outline: none;
+  }
+
+  .search-row:focus-within {
+    border-color: var(--phosphor);
+  }
+
+  #search::placeholder {
+    color: var(--text-dim);
+  }
+
+  .hint {
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 1px 7px;
+    margin-left: 8px;
+  }
+
+  .filters {
+    margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    background: transparent;
+    color: var(--text-dim);
+    border: none;
+    padding: 4px 2px;
+    transition: color 0.15s ease;
+  }
+
+  .chip::before {
+    content: '[';
+  }
+
+  .chip::after {
+    content: ']';
+  }
+
+  .chip:hover {
+    color: var(--text);
+  }
+
+  .chip.active {
+    color: var(--signal);
+    font-weight: 700;
+  }
+
+  .results {
+    padding-block: 0 64px;
+  }
+
+  .results-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  #sort {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    background: var(--bg-panel);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 6px 10px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--text-dim);
+    padding-block: 48px;
+  }
+</style>
+
+<script>
+  const searchInput = document.getElementById('search') as HTMLInputElement;
+  const sortSelect = document.getElementById('sort') as HTMLSelectElement;
+  const grid = document.getElementById('grid') as HTMLElement;
+  const resultCount = document.getElementById('result-count') as HTMLElement;
+  const emptyState = document.getElementById('empty') as HTMLElement;
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip'));
+  const cards = Array.from(grid.querySelectorAll<HTMLAnchorElement>('[data-card]'));
+
+  const activeFilters = new Map<string, Set<string>>();
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const group = chip.dataset.group!;
+      const value = chip.dataset.value!;
+      const set = activeFilters.get(group) ?? new Set<string>();
+      if (set.has(value)) {
+        set.delete(value);
+        chip.classList.remove('active');
+      } else {
+        set.add(value);
+        chip.classList.add('active');
+      }
+      activeFilters.set(group, set);
+      applyFilters();
+    });
+  });
+
+  function matchesGroup(card: HTMLElement, group: string, values: Set<string>): boolean {
+    if (values.size === 0) return true;
+    const cardValues = (card.dataset[group] ?? '').split(' ');
+    return [...values].some((v) => cardValues.includes(v));
+  }
+
+  function applyFilters() {
+    const query = searchInput.value.trim().toLowerCase();
+    const terms = query.split(/\s+/).filter(Boolean);
+    let visible = 0;
+
+    for (const card of cards) {
+      const facetMatch = [...activeFilters.entries()].every(([group, values]) =>
+        matchesGroup(card, group, values)
+      );
+      const searchable = card.dataset.search ?? '';
+      const searchMatch = terms.every((term) => searchable.includes(term));
+      const show = facetMatch && searchMatch;
+      card.style.display = show ? '' : 'none';
+      if (show) visible += 1;
+    }
+
+    resultCount.textContent = `${visible} server${visible === 1 ? '' : 's'}`;
+    emptyState.hidden = visible !== 0;
+  }
+
+  function applySort() {
+    const mode = sortSelect.value;
+    const sorted = [...cards].sort((a, b) => {
+      if (mode === 'name') return a.dataset.name!.localeCompare(b.dataset.name!);
+      if (mode === 'updated') {
+        return (b.dataset.updatedTs ? Number(b.dataset.updatedTs) : 0) -
+          (a.dataset.updatedTs ? Number(a.dataset.updatedTs) : 0);
+      }
+      return (Number(b.dataset.stars) || 0) - (Number(a.dataset.stars) || 0);
+    });
+    sorted.forEach((card) => grid.appendChild(card));
+  }
+
+  searchInput.addEventListener('input', applyFilters);
+  sortSelect.addEventListener('change', applySort);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== '/') return;
+    const active = document.activeElement;
+    const isTyping =
+      active instanceof HTMLInputElement ||
+      active instanceof HTMLTextAreaElement ||
+      active instanceof HTMLSelectElement;
+    if (isTyping) return;
+    e.preventDefault();
+    searchInput.focus();
+  });
+</script>
