@@ -1,0 +1,32 @@
+name: elmah.io
+summary: Search logs, investigate errors, check deployments, and monitor uptime for your elmah.io org.
+description: |
+  elmah.io's own MCP server, giving a model direct access to your organization's
+  error logs, uptime checks, and deployments. Search and read log messages,
+  pull details on a specific error, check the status of uptime monitors, and
+  look up recent deployments, all without leaving the conversation.
+
+  Runs as a hosted remote server reachable over HTTP, so there's nothing to
+  install locally. Clients authenticate with an OAuth sign-in to elmah.io;
+  scripts and CI/CD can use an elmah.io API key as a bearer token instead.
+repoUrl: https://mcp.elmah.io/
+homepageUrl: https://elmah.io
+author: elmah.io
+language: C#
+transports: [http]
+tags: [error-monitoring, observability, logging, uptime]
+official: true
+featured: true
+installCommand: claude mcp add --transport http --client-id claudecode elmahio https://mcp.elmah.io/mcp
+installConfig: |
+  {
+    "mcpServers": {
+      "elmahio": {
+        "type": "http",
+        "url": "https://mcp.elmah.io/mcp",
+        "oauth": {
+          "clientId": "claudecode"
+        }
+      }
+    }
+  }
