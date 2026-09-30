@@ -1,6 +1,6 @@
 import { getCollection } from 'astro:content';
 import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
 export interface GithubStats {
   stars: number | null;
@@ -9,8 +9,11 @@ export interface GithubStats {
 
 function loadStats(): Record<string, GithubStats> {
   try {
-    const path = fileURLToPath(new URL('../data/github-stats.json', import.meta.url));
-    return JSON.parse(readFileSync(path, 'utf-8'));
+    // process.cwd(), not import.meta.url: Vite relocates this module into a
+    // build chunk during `astro build`, which breaks import.meta.url-relative
+    // paths even though they resolve fine under `astro dev`.
+    const filePath = path.join(process.cwd(), 'src/data/github-stats.json');
+    return JSON.parse(readFileSync(filePath, 'utf-8'));
   } catch {
     return {};
   }
