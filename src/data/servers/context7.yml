@@ -17,7 +17,7 @@ language: TypeScript
 transports: [stdio, http]
 tags: [documentation, developer-tools]
 official: true
-featured: true
+featured: false
 installCommand: npx -y @upstash/context7-mcp
 installConfig: |
   {

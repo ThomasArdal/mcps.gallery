@@ -11,20 +11,24 @@ const { server } = Astro.props;
 
 <a
   href={`/servers/${server.id}/`}
-  class="card"
   data-card
   data-name={server.name.toLowerCase()}
   data-language={server.language}
   data-transports={server.transports.join(' ')}
   data-tags={server.tags.join(' ')}
   data-official={server.official ? 'true' : 'false'}
+  data-featured={server.featured ? 'true' : 'false'}
   data-search={[server.name, server.summary, server.author, ...server.tags].join(' ').toLowerCase()}
   data-stars={server.stars ?? 0}
   data-updated-ts={server.lastCommit ? new Date(server.lastCommit).getTime() : 0}
+  class:list={['card', { featured: server.featured }]}
 >
   <div class="top">
     <span class="bracket-tag">[{server.tags[0] ?? server.language}]</span>
-    {server.official && <span class="stamp">[OFFICIAL]</span>}
+    <span class="badges">
+      {server.featured && <span class="stamp featured-stamp">[FEATURED]</span>}
+      {server.official && <span class="stamp">[OFFICIAL]</span>}
+    </span>
   </div>
   <h3 class="name"><span class="prompt" aria-hidden="true">$ </span>{server.name}</h3>
   <p class="summary">{server.summary}</p>
@@ -61,10 +65,20 @@ const { server } = Astro.props;
     transform: translateY(-2px);
   }
 
+  .card.featured {
+    border-color: var(--line-bright);
+  }
+
   .top {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
+  }
+
+  .badges {
+    display: flex;
+    align-items: center;
     gap: 8px;
   }
 
@@ -77,6 +91,10 @@ const { server } = Astro.props;
     font-size: 0.72rem;
     font-weight: 700;
     color: var(--signal);
+  }
+
+  .featured-stamp {
+    color: var(--phosphor);
   }
 
   .name {

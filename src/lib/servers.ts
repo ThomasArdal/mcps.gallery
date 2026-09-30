@@ -39,7 +39,7 @@ export async function getAllServers() {
         lastCommit: repoStats.lastCommit,
       };
     })
-    .sort((a, b) => (b.stars ?? -1) - (a.stars ?? -1));
+    .sort((a, b) => Number(b.featured) - Number(a.featured) || (b.stars ?? -1) - (a.stars ?? -1));
 }
 
 export type ServerEntry = Awaited<ReturnType<typeof getAllServers>>[number];

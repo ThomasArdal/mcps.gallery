@@ -16,7 +16,7 @@ language: TypeScript
 transports: [stdio]
 tags: [memory, knowledge-graph, reference-server]
 official: true
-featured: true
+featured: false
 installCommand: npx -y @modelcontextprotocol/server-memory
 installConfig: |
   {

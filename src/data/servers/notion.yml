@@ -14,7 +14,7 @@ language: TypeScript
 transports: [stdio]
 tags: [productivity, docs, databases]
 official: true
-featured: true
+featured: false
 installCommand: npx -y @notionhq/notion-mcp-server
 installConfig: |
   {

@@ -26,6 +26,7 @@ const repoName = server.repoUrl.replace(/^https?:\/\/(www\.)?github\.com\//, '')
           <div class="main">
             <div class="panel-top">
               <span class="primary-tag">[{server.tags[0] ?? server.language}]</span>
+              {server.featured && <span class="stamp featured-stamp">[FEATURED]</span>}
               {server.official && <span class="stamp">[OFFICIAL]</span>}
             </div>
 
@@ -159,6 +160,10 @@ const repoName = server.repoUrl.replace(/^https?:\/\/(www\.)?github\.com\//, '')
     font-size: 0.76rem;
     font-weight: 700;
     color: var(--signal);
+  }
+
+  .featured-stamp {
+    color: var(--phosphor);
   }
 
   .prompt {
